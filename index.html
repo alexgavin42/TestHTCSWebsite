@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Educational Matrix Tool</title>
+  <link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+  <!-- Navigation Menu -->
+  <div id="navMenu" class="nav-menu">
+    <div class="nav-header">
+      <h3>Menu</h3>
+      <button id="closeMenuBtn" class="close-menu-btn">&times;</button>
+    </div>
+    <nav class="nav-links">
+      <a href="#" class="nav-link active" data-tab="matrix">Matrix Calculator</a>
+      <a href="#" class="nav-link" data-tab="cats">Cats</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <header>
+      <button id="menuBtn" class="menu-btn">☰</button>
+      <div class="header-content">
+        <h1 id="headerTitle">📊 Matrix Calculator</h1>
+        <p id="headerSubtitle">An educational tool for matrix operations and linear algebra</p>
+      </div>
+    </header>
+
+    <!-- Matrix Calculator Tab -->
+    <div id="matrixTab" class="tab-content active">
+    <div class="main-content">
+      <!-- Left Panel: Saved Matrices -->
+      <div class="left-panel">
+        <h2>Saved Matrices</h2>
+        <div id="matrixList"></div>
+      </div>
+
+      <!-- Center Panel: Matrix Editor -->
+      <div class="center-panel">
+        <div class="editor-section">
+          <h2>
+            Matrix Editor
+            <span id="matrixDimensions" class="matrix-dimensions">3 × 3</span>
+          </h2>
+
+          <div class="matrix-controls">
+            <input type="number" id="newRows" value="3" min="1" max="10" placeholder="Rows">
+            <input type="number" id="newCols" value="3" min="1" max="10" placeholder="Cols">
+            <button id="newMatrixBtn" class="btn">New Matrix</button>
+          </div>
+
+          <div id="matrixGrid"></div>
+
+          <div class="matrix-controls">
+            <input type="text" id="matrixName" placeholder="Enter matrix name...">
+            <button id="saveMatrixBtn" class="btn">Save Matrix</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Operations -->
+      <div class="right-panel">
+        <h2>Operations</h2>
+
+        <!-- Load Matrix -->
+        <div class="operation-group">
+          <h3>Load Matrix</h3>
+          <p>Load a saved matrix into the editor</p>
+          <div class="load-section">
+            <select id="loadMatrixSelect">
+              <option value="">Select Matrix</option>
+            </select>
+            <button id="loadToCurrentBtn" class="btn">Load to Editor</button>
+          </div>
+        </div>
+
+        <!-- Binary Operations -->
+        <div class="operation-group">
+          <h3>Binary Operations</h3>
+          <p>Operations between two matrices</p>
+          <div class="binary-ops">
+            <select id="matrixASelect">
+              <option value="">Select Matrix A</option>
+            </select>
+            <select id="matrixBSelect">
+              <option value="">Select Matrix B</option>
+            </select>
+            <button id="addBtn" class="btn">A + B (Addition)</button>
+            <button id="subtractBtn" class="btn">A - B (Subtraction)</button>
+            <button id="multiplyBtn" class="btn">A × B (Multiplication)</button>
+          </div>
+        </div>
+
+        <!-- Unary Operations -->
+        <div class="operation-group">
+          <h3>Matrix Properties</h3>
+          <p>Operations on the current matrix</p>
+          <button id="transposeBtn" class="btn">Transpose (A<sup>T</sup>)</button>
+          <button id="determinantBtn" class="btn">Determinant (det)</button>
+          <button id="inverseBtn" class="btn">Inverse (A<sup>-1</sup>)</button>
+          <button id="rankBtn" class="btn">Rank</button>
+          <button id="eigenvaluesBtn" class="btn">Eigenvalues (λ)</button>
+        </div>
+
+        <!-- Scalar Operations -->
+        <div class="operation-group">
+          <h3>Scalar Operations</h3>
+          <p>Multiply current matrix by a scalar</p>
+          <div class="scalar-ops">
+            <input type="number" id="scalarValue" value="2" step="0.1" placeholder="Scalar value">
+            <button id="scalarMultiplyBtn" class="btn">Multiply by Scalar</button>
+          </div>
+        </div>
+
+        <!-- Randomize Operations -->
+        <div class="operation-group">
+          <h3>Randomize Matrix</h3>
+          <p>Fill current matrix with random values</p>
+          <div class="scalar-ops">
+            <input type="number" id="randomMin" value="0" step="1" placeholder="Min value">
+            <input type="number" id="randomMax" value="10" step="1" placeholder="Max value">
+            <button id="randomizeBtn" class="btn">Randomize</button>
+          </div>
+        </div>
+
+        <!-- Custom Operations -->
+        <div class="operation-group">
+          <h3>Custom Function</h3>
+          <p>Apply a custom function to each element. Use 'value', 'i' (row), 'j' (column)</p>
+          <div class="custom-ops">
+            <textarea id="customFunction" placeholder="e.g., value * 2 + 1">value * value</textarea>
+            <button id="applyFunctionBtn" class="btn">Apply Function</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Display -->
+    <div class="result-section">
+      <h2>Results</h2>
+      <div id="resultDisplay">
+        <p style="color: #6c757d; text-align: center; padding: 40px;">
+          Results will appear here after performing operations
+        </p>
+      </div>
+    </div>
+    </div>
+
+    <!-- Cats Tab -->
+    <div id="catsTab" class="tab-content">
+      <div class="cats-container">
+        <div class="cats-header">
+          <h2>🐱 Database Viewer</h2>
+          <button id="refreshCatsBtn" class="btn">Refresh Data</button>
+        </div>
+
+        <div id="firebaseStatus" class="firebase-status">
+          <p>Connecting to Firebase...</p>
+        </div>
+
+        <div id="collectionSelector" class="collection-selector">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0;">Collections:</h3>
+            <button id="createCollectionBtn" class="btn-small" style="margin: 0;">+ New Collection</button>
+          </div>
+          <div id="collectionButtons" class="collection-buttons">
+            <p class="loading-message">Loading collections...</p>
+          </div>
+        </div>
+
+        <div class="cats-controls">
+          <div class="dynamic-form">
+            <h3>Add New Entry</h3>
+            <div id="dynamicFields"></div>
+            <div class="form-actions">
+              <button id="addFieldBtn" class="btn-small">+ Add Field</button>
+              <button id="addEntryBtn" class="btn">Add Entry</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="catsDisplay" class="cats-display">
+          <p class="loading-message">Loading data from Firebase...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <script src="matrix-engine.js?v=4"></script>
+  <script src="matrix-app.js?v=4"></script>
+  <script src="firebase-cats.js?v=4"></script>
+  <script>
+    // Tab Navigation Logic - Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuBtn = document.getElementById('menuBtn');
+      const closeMenuBtn = document.getElementById('closeMenuBtn');
+      const navMenu = document.getElementById('navMenu');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const headerTitle = document.getElementById('headerTitle');
+      const headerSubtitle = document.getElementById('headerSubtitle');
+
+      // Toggle menu
+      if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+          navMenu.classList.add('open');
+        });
+      }
+
+      if (closeMenuBtn) {
+        closeMenuBtn.addEventListener('click', () => {
+          navMenu.classList.remove('open');
+        });
+      }
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (navMenu && menuBtn && !navMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+          navMenu.classList.remove('open');
+        }
+      });
+
+      // Tab switching
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const tabName = link.dataset.tab;
+
+          // Update active nav link
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+
+          // Hide all tabs
+          document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+          });
+
+          // Show selected tab
+          const selectedTab = document.getElementById(tabName + 'Tab');
+          if (selectedTab) {
+            selectedTab.classList.add('active');
+          }
+
+          // Update header
+          if (tabName === 'matrix') {
+            headerTitle.textContent = '📊 Matrix Calculator';
+            headerSubtitle.textContent = 'An educational tool for matrix operations and linear algebra';
+          } else if (tabName === 'cats') {
+            headerTitle.textContent = 'Database';
+            headerSubtitle.textContent = 'A viewer for Firebase collections and documents';
+          }
+
+          // Close menu
+          navMenu.classList.remove('open');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
