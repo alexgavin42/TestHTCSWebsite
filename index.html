@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Educational Matrix Tool</title>
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=17">
 </head>
 <body>
   <!-- Navigation Menu -->
@@ -16,6 +16,8 @@
     <nav class="nav-links">
       <a href="#" class="nav-link active" data-tab="matrix">Matrix Calculator</a>
       <a href="#" class="nav-link" data-tab="cats">Cats</a>
+      <a href="#" class="nav-link" data-tab="leaderboard">Leaderboard</a>
+      <a href="#" class="nav-link" data-tab="data">Data</a>
     </nav>
   </div>
 
@@ -186,15 +188,91 @@
         </div>
       </div>
     </div>
+
+    <!-- Leaderboard Tab -->
+    <div id="leaderboardTab" class="tab-content">
+      <div class="leaderboard-container">
+        <h2>🏆 Leaderboard</h2>
+
+        <div id="leaderboardStatus" class="leaderboard-status">
+          <p>Connecting to leaderboard...</p>
+        </div>
+
+        <!-- Input Form -->
+        <div class="leaderboard-input-section">
+          <h3>Submit Your Score</h3>
+          <p class="leaderboard-warning">⚠️ Note: Scores that exceed the highest score by more than 20% will be rejected.</p>
+          <p class="leaderboard-warning">⚠️ Important: You only get one attempt per day. Choose carefully!</p>
+          <div class="leaderboard-form">
+            <input type="text" id="playerName" placeholder="Enter your name" maxlength="30">
+            <input type="number" id="playerScore" placeholder="Enter your score" min="0" step="1">
+            <button id="submitScoreBtn" class="btn">Submit Score</button>
+          </div>
+          <p id="submissionMessage" class="submission-message"></p>
+        </div>
+
+        <!-- Leaderboard Display (hidden until first submission) -->
+        <div id="leaderboardDisplay" class="leaderboard-display" style="display: none;">
+          <h3>Top Scores</h3>
+          <div id="leaderboardList" class="leaderboard-list">
+            <p class="loading-message">Loading scores...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Tab -->
+    <div id="dataTab" class="tab-content">
+      <div class="data-container">
+        <h2>📊 Data</h2>
+        <p class="data-subtitle">Explore random datasets from <a href="https://data.gov" target="_blank">data.gov</a></p>
+
+        <div class="data-controls">
+          <button id="getRandomDatasetBtn" class="btn btn-large">Get Random Dataset</button>
+        </div>
+
+        <div id="dataStatus" class="data-status">
+          <p>Click the button above to fetch a random dataset</p>
+        </div>
+
+        <div id="dataInfo" class="data-info" style="display: none;">
+          <h3 id="datasetTitle">Dataset Title</h3>
+          <p id="datasetDescription" class="dataset-description"></p>
+          <p class="dataset-meta">
+            <span id="datasetOrg"></span>
+            <a id="datasetLink" href="#" target="_blank">View on data.gov</a>
+          </p>
+        </div>
+
+        <div id="dataChartContainer" class="data-chart-container" style="display: none;">
+          <canvas id="dataChart"></canvas>
+        </div>
+
+        <div id="dataTableContainer" class="data-table-container" style="display: none;">
+          <h3>Data Preview (First 10 Rows)</h3>
+          <div class="table-wrapper">
+            <table id="dataTable" class="data-table">
+              <thead id="dataTableHead"></thead>
+              <tbody id="dataTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-  <script src="matrix-engine.js?v=4"></script>
-  <script src="matrix-app.js?v=4"></script>
-  <script src="firebase-cats.js?v=4"></script>
+  <script src="matrix-engine.js?v=17"></script>
+  <script src="matrix-app.js?v=17"></script>
+  <script src="firebase-cats.js?v=17"></script>
+  <script src="firebase-leaderboard.js?v=17"></script>
+  <script src="data-gov.js?v=17"></script>
   <script>
     // Tab Navigation Logic - Wait for DOM to be ready
     document.addEventListener('DOMContentLoaded', () => {
@@ -253,6 +331,12 @@
           } else if (tabName === 'cats') {
             headerTitle.textContent = 'Database';
             headerSubtitle.textContent = 'A viewer for Firebase collections and documents';
+          } else if (tabName === 'leaderboard') {
+            headerTitle.textContent = '🏆 Leaderboard';
+            headerSubtitle.textContent = 'Competition rankings and scores';
+          } else if (tabName === 'data') {
+            headerTitle.textContent = '📊 Data';
+            headerSubtitle.textContent = 'Data analysis and visualization';
           }
 
           // Close menu

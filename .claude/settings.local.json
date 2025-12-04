@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(firebase deploy:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(ls:*)",
+      "WebSearch",
+      "WebFetch(domain:open.gsa.gov)",
+      "WebFetch(domain:docs.ckan.org)"
     ],
     "deny": [],
     "ask": []
